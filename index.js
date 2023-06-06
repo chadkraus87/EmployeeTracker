@@ -10,7 +10,8 @@ const {
   updateEmployeeRole,
   deleteDepartment,
   deleteRole,
-  viewDepartmentBudget
+  viewDepartmentBudget,
+  updateEmployeeManager
 } = require('./db/queries');
 const Department = require('./models/Department');
 const Role = require('./models/Role');
@@ -22,7 +23,8 @@ const {
   promptUpdateEmployeeRole,
   promptDeleteDepartment,
   promptDeleteRole,
-  promptViewDepartmentBudget
+  promptViewDepartmentBudget,
+  promptUpdateEmployeeManager
 } = require('./utils/prompts');
 
 // Start the application
@@ -44,6 +46,7 @@ async function startApp() {
             'Add a role',
             'Add an employee',
             'Update an employee role',
+            'Update an employee manager',
             'Delete a department',
             'Delete a role',
             'View total utilized budget of a department',
@@ -79,6 +82,10 @@ async function startApp() {
 
         case 'Update an employee role':
           await updateEmployeeRoleData();
+          break;
+
+        case 'Update an employee manager':
+          await updateEmployeeManagerData();
           break;
 
         case 'Delete a department':
@@ -159,6 +166,18 @@ async function updateEmployeeRoleData() {
   const { employeeId, roleId } = await promptUpdateEmployeeRole(employees, roles);
   await updateEmployeeRole(employeeId, roleId);
   console.log('Employee role updated successfully!');
+}
+
+// Function to update an employee's manager
+async function updateEmployeeManagerData() {
+  try {
+    const employees = await viewAllEmployees();
+    const { employeeId, managerId } = await promptUpdateEmployeeManager(employees);
+    await updateEmployeeManager(employeeId, managerId);
+    console.log('Employee manager updated successfully!');
+  } catch (error) {
+    console.error('An error occurred while updating the employee manager:', error);
+  }
 }
 
 // Delete a department

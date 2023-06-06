@@ -19,9 +19,27 @@ async function viewAllRoles() {
 
 // View all employees
 async function viewAllEmployees() {
-  const [rows] = await connection.query('SELECT * FROM employee');
-  const employees = rows.map((row) => new Employee(row.id, row.first_name, row.last_name, row.role_id, row.manager_id));
-  return employees;
+  try {
+    const [rows] = await connection.execute(`
+      SELECT 
+        employee.id,
+        employee.first_name,
+        employee.last_name,
+        role.title,
+        department.name AS department,
+        role.salary,
+        CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+      FROM
+        employee
+        LEFT JOIN role ON employee.role_id = role.id
+        LEFT JOIN department ON role.department_id = department.id
+        LEFT JOIN employee manager ON employee.manager_id = manager.id
+    `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
 }
 
 // View employees by manager
@@ -64,6 +82,20 @@ async function updateEmployeeRole(employeeId, roleId) {
   return result;
 }
 
+// Function to update an employee's manager
+async function updateEmployeeManager(employeeId, managerId) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      'UPDATE employees SET manager_id = ? WHERE id = ?',
+      [managerId, employeeId],
+      (error, result) => {
+        if (error) reject(error);
+        resolve(result);
+      }
+    );
+  });
+}
+
 // Delete a department
 async function deleteDepartment(departmentId) {
   const result = await connection.query('DELETE FROM department WHERE id = ?', [departmentId]);
@@ -97,6 +129,7 @@ module.exports = {
   addRole,
   addEmployee,
   updateEmployeeRole,
+  updateEmployeeManager,
   viewEmployeesByManager,
   viewEmployeesByDepartment,
   deleteDepartment,

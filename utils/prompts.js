@@ -100,6 +100,29 @@ async function promptUpdateEmployeeRole() {
   ]);
 }
 
+// Update an employee's manager
+async function promptUpdateEmployeeManager(employees) {
+  const employeeChoices = employees.map((employee) => ({
+    name: `${employee.first_name} ${employee.last_name}`,
+    value: employee.id
+  }));
+
+  return inquirer.prompt([
+    {
+      type: 'list',
+      name: 'employeeId',
+      message: "Select the employee you want to update the manager for:",
+      choices: employeeChoices
+    },
+    {
+      type: 'list',
+      name: 'managerId',
+      message: "Select the new manager for the employee:",
+      choices: employeeChoices
+    }
+  ]);
+}
+
 // Delete a department
 async function promptDeleteDepartment() {
   const departments = await queries.viewAllDepartments();
@@ -153,6 +176,7 @@ module.exports = {
   promptAddRole,
   promptAddEmployee,
   promptUpdateEmployeeRole,
+  promptUpdateEmployeeManager,
   promptDeleteDepartment,
   promptDeleteRole,
   promptViewDepartmentBudget
