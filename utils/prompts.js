@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
+const queries = require('../db/queries');
 
-// Prompt for adding a department
+// Add a department
 function promptAddDepartment() {
   return inquirer.prompt([
     {
@@ -11,8 +12,9 @@ function promptAddDepartment() {
   ]);
 }
 
-// Prompt for adding a role
-function promptAddRole(departments) {
+// Add a role
+async function promptAddRole() {
+  const departments = await queries.viewAllDepartments();
   return inquirer.prompt([
     {
       type: 'input',
@@ -36,8 +38,10 @@ function promptAddRole(departments) {
   ]);
 }
 
-// Prompt for adding an employee
-function promptAddEmployee(roles, employees) {
+// Add an employee
+async function promptAddEmployee() {
+  const roles = await queries.viewAllRoles();
+  const employees = await queries.viewAllEmployees();
   return inquirer.prompt([
     {
       type: 'input',
@@ -70,8 +74,10 @@ function promptAddEmployee(roles, employees) {
   ]);
 }
 
-// Prompt for updating an employee's role
-function promptUpdateEmployeeRole(employees, roles) {
+// Update an employee's role
+async function promptUpdateEmployeeRole() {
+  const employees = await queries.viewAllEmployees();
+  const roles = await queries.viewAllRoles();
   return inquirer.prompt([
     {
       type: 'list',
@@ -94,9 +100,60 @@ function promptUpdateEmployeeRole(employees, roles) {
   ]);
 }
 
+// Delete a department
+async function promptDeleteDepartment() {
+  const departments = await queries.viewAllDepartments();
+  return inquirer.prompt([
+    {
+      type: 'list',
+      name: 'departmentId',
+      message: 'Select the department to delete:',
+      choices: departments.map(department => ({
+        name: department.name,
+        value: department.id
+      }))
+    }
+  ]);
+}
+
+// Prompt for deleting a role
+async function promptDeleteRole() {
+  const roles = await queries.viewAllRoles();
+  return inquirer.prompt([
+    {
+      type: 'list',
+      name: 'roleId',
+      message: 'Select the role to delete:',
+      choices: roles.map(role => ({
+        name: role.title,
+        value: role.id
+      }))
+    }
+  ]);
+}
+
+// Total utilized budget of a department
+async function promptViewDepartmentBudget() {
+  const departments = await queries.viewAllDepartments();
+  return inquirer.prompt([
+    {
+      type: 'list',
+      name: 'departmentId',
+      message: 'Select the department to view the total utilized budget:',
+      choices: departments.map(department => ({
+        name: department.name,
+        value: department.id
+      }))
+    }
+  ]);
+}
+
 module.exports = {
   promptAddDepartment,
   promptAddRole,
   promptAddEmployee,
-  promptUpdateEmployeeRole
+  promptUpdateEmployeeRole,
+  promptDeleteDepartment,
+  promptDeleteRole,
+  promptViewDepartmentBudget
 };

@@ -24,6 +24,20 @@ async function viewAllEmployees() {
   return employees;
 }
 
+// View employees by manager
+async function viewEmployeesByManager(managerId) {
+  const [rows] = await connection.query('SELECT * FROM employee WHERE manager_id = ?', [managerId]);
+  const employees = rows.map((row) => new Employee(row.id, row.first_name, row.last_name, row.role_id, row.manager_id));
+  return employees;
+}
+
+// View employees by department
+async function viewEmployeesByDepartment(departmentId) {
+  const [rows] = await connection.query('SELECT * FROM employee WHERE role_id IN (SELECT id FROM role WHERE department_id = ?)', [departmentId]);
+  const employees = rows.map((row) => new Employee(row.id, row.first_name, row.last_name, row.role_id, row.manager_id));
+  return employees;
+}
+
 // Add a department
 async function addDepartment(department) {
   const result = await connection.query('INSERT INTO department SET ?', department);
@@ -50,6 +64,31 @@ async function updateEmployeeRole(employeeId, roleId) {
   return result;
 }
 
+// Delete a department
+async function deleteDepartment(departmentId) {
+  const result = await connection.query('DELETE FROM department WHERE id = ?', [departmentId]);
+  return result;
+}
+
+// Delete a role
+async function deleteRole(roleId) {
+  const result = await connection.query('DELETE FROM role WHERE id = ?', [roleId]);
+  return result;
+}
+
+// Delete an employee
+async function deleteEmployee(employeeId) {
+  const result = await connection.query('DELETE FROM employee WHERE id = ?', [employeeId]);
+  return result;
+}
+
+// View total utilized budget of a department
+async function viewDepartmentBudget(departmentId) {
+  const [rows] = await connection.query('SELECT SUM(salary) AS total_budget FROM role WHERE department_id = ?', [departmentId]);
+  const { total_budget } = rows[0];
+  return total_budget;
+}
+
 module.exports = {
   viewAllDepartments,
   viewAllRoles,
@@ -57,5 +96,11 @@ module.exports = {
   addDepartment,
   addRole,
   addEmployee,
-  updateEmployeeRole
+  updateEmployeeRole,
+  viewEmployeesByManager,
+  viewEmployeesByDepartment,
+  deleteDepartment,
+  deleteRole,
+  deleteEmployee,
+  viewDepartmentBudget
 };

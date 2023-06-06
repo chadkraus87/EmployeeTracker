@@ -1,12 +1,31 @@
 const inquirer = require('inquirer');
 
-const { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment, addRole, addEmployee, updateEmployeeRole } = require('./db/queries');
+const {
+  viewAllDepartments,
+  viewAllRoles,
+  viewAllEmployees,
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployeeRole,
+  deleteDepartment,
+  deleteRole,
+  viewDepartmentBudget
+} = require('./db/queries');
 const Department = require('./models/Department');
 const Role = require('./models/Role');
 const Employee = require('./models/Employee');
-const { promptAddDepartment, promptAddRole, promptAddEmployee, promptUpdateEmployeeRole } = require('./utils/prompts');
+const {
+  promptAddDepartment,
+  promptAddRole,
+  promptAddEmployee,
+  promptUpdateEmployeeRole,
+  promptDeleteDepartment,
+  promptDeleteRole,
+  promptViewDepartmentBudget
+} = require('./utils/prompts');
 
-// Function to start the application
+// Start the application
 async function startApp() {
   try {
     let exit = false;
@@ -25,6 +44,9 @@ async function startApp() {
             'Add a role',
             'Add an employee',
             'Update an employee role',
+            'Delete a department',
+            'Delete a role',
+            'View total utilized budget of a department',
             'Exit'
           ]
         }
@@ -59,6 +81,18 @@ async function startApp() {
           await updateEmployeeRoleData();
           break;
 
+        case 'Delete a department':
+          await deleteDepartmentData();
+          break;
+
+        case 'Delete a role':
+          await deleteRoleData();
+          break;
+
+        case 'View total utilized budget of a department':
+          await viewDepartmentBudgetData();
+          break;
+
         case 'Exit':
           exit = true;
           break;
@@ -73,25 +107,25 @@ async function startApp() {
   }
 }
 
-// Function to display all departments
+// Display all departments
 async function displayAllDepartments() {
   const departments = await viewAllDepartments();
   console.table(departments);
 }
 
-// Function to display all roles
+// Display all roles
 async function displayAllRoles() {
   const roles = await viewAllRoles();
   console.table(roles);
 }
 
-// Function to display all employees
+// Display all employees
 async function displayAllEmployees() {
   const employees = await viewAllEmployees();
   console.table(employees);
 }
 
-// Function to add a new department
+// Add a new department
 async function addNewDepartment() {
   const { name } = await promptAddDepartment();
   const department = new Department(null, name);
@@ -99,7 +133,7 @@ async function addNewDepartment() {
   console.log('Department added successfully!');
 }
 
-// Function to add a new role
+// Add a new role
 async function addNewRole() {
   const departments = await viewAllDepartments();
   const { title, salary, departmentId } = await promptAddRole(departments);
@@ -108,7 +142,7 @@ async function addNewRole() {
   console.log('Role added successfully!');
 }
 
-// Function to add a new employee
+// Add a new employee
 async function addNewEmployee() {
   const roles = await viewAllRoles();
   const employees = await viewAllEmployees();
@@ -118,7 +152,7 @@ async function addNewEmployee() {
   console.log('Employee added successfully!');
 }
 
-// Function to update an employee's role
+// Update an employee's role
 async function updateEmployeeRoleData() {
   const employees = await viewAllEmployees();
   const roles = await viewAllRoles();
@@ -127,5 +161,28 @@ async function updateEmployeeRoleData() {
   console.log('Employee role updated successfully!');
 }
 
-// Call the startApp function to start the application
+// Delete a department
+async function deleteDepartmentData() {
+  const departments = await viewAllDepartments();
+  const { departmentId } = await promptDeleteDepartment(departments);
+  await deleteDepartment(departmentId);
+  console.log('Department deleted successfully!');
+}
+
+// Delete a role
+async function deleteRoleData() {
+  const roles = await viewAllRoles();
+  const { roleId } = await promptDeleteRole(roles);
+  await deleteRole(roleId);
+  console.log('Role deleted successfully!');
+}
+
+// View the total utilized budget of a department
+async function viewDepartmentBudgetData() {
+  const departments = await viewAllDepartments();
+  const { departmentId } = await promptViewDepartmentBudget(departments);
+  const budget = await viewDepartmentBudget(departmentId);
+  console.log(`Total Utilized Budget: $${budget}`);
+}
+
 startApp();
