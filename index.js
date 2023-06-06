@@ -30,6 +30,9 @@ const {
 // Start the application
 async function startApp() {
   try {
+    console.log('==========================================');
+    console.log('        Employee Management Tracker        ');
+    console.log('==========================================');
     let exit = false;
 
     while (!exit) {
