@@ -9,6 +9,8 @@ The Employee Management System is a command-line application that allows users t
 
 [GitHub Repository](https://github.com/chadkraus87/EmployeeTracker)
 
+[Terminal Demo Video](https://drive.google.com/file/d/1R3MvpUrgGGZx_RJXHq8LRBjfvBBzXhYN/view)
+
 ![Terminal Demo](./lib/terminal.png)
 
 ## Table of Contents
@@ -46,7 +48,7 @@ Note: Make sure you have MySQL installed and running before starting the applica
 
 ## License
 
-This project is licensed under the MIT License license.
+This project is licensed under the MIT License.
 
 ## Contributing
 
