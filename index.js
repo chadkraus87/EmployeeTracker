@@ -171,16 +171,12 @@ async function updateEmployeeRoleData() {
   console.log('Employee role updated successfully!');
 }
 
-// Function to update an employee's manager
+// Update an employee's manager
 async function updateEmployeeManagerData() {
-  try {
-    const employees = await viewAllEmployees();
-    const { employeeId, managerId } = await promptUpdateEmployeeManager(employees);
-    await updateEmployeeManager(employeeId, managerId);
-    console.log('Employee manager updated successfully!');
-  } catch (error) {
-    console.error('An error occurred while updating the employee manager:', error);
-  }
+  const employees = await viewAllEmployees();
+  const { employeeId, managerId } = await promptUpdateEmployeeManager(employees);
+  await updateEmployeeManager(employeeId, managerId);
+  console.log('Employee manager updated successfully!');
 }
 
 // Delete a department
@@ -207,4 +203,6 @@ async function viewDepartmentBudgetData() {
   console.log(`Total Utilized Budget: $${budget}`);
 }
 
-startApp();
+startApp().catch((error) => {
+  console.error('An unhandled error occurred:', error);
+});

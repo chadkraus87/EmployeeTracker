@@ -39,9 +39,7 @@ async function promptAddRole() {
 }
 
 // Add an employee
-async function promptAddEmployee() {
-  const roles = await queries.viewAllRoles();
-  const employees = await queries.viewAllEmployees();
+async function promptAddEmployee(roles, employees) {
   return inquirer.prompt([
     {
       type: 'input',
@@ -103,22 +101,32 @@ async function promptUpdateEmployeeRole() {
 // Update an employee's manager
 async function promptUpdateEmployeeManager(employees) {
   const employeeChoices = employees.map((employee) => ({
-    name: `${employee.first_name} ${employee.last_name}`,
+    name: `${employee.firstName} ${employee.lastName}`,
     value: employee.id
   }));
+
+  const managerChoices = employees.map((employee) => ({
+    name: `${employee.firstName} ${employee.lastName}`,
+    value: employee.id
+  }));
+
+  if (employeeChoices.length === 0) {
+    console.log('No employees found.');
+    return null;
+  }
 
   return inquirer.prompt([
     {
       type: 'list',
       name: 'employeeId',
-      message: "Select the employee you want to update the manager for:",
+      message: 'Select the employee you want to update the manager for:',
       choices: employeeChoices
     },
     {
       type: 'list',
       name: 'managerId',
-      message: "Select the new manager for the employee:",
-      choices: employeeChoices
+      message: 'Select the new manager for the employee:',
+      choices: managerChoices
     }
   ]);
 }
