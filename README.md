@@ -9,7 +9,7 @@ The Employee Management System is a command-line application that allows users t
 
 [GitHub Repository](https://github.com/chadkraus87/EmployeeTracker)
 
-[Terminal Demo Video](https://drive.google.com/file/d/1R3MvpUrgGGZx_RJXHq8LRBjfvBBzXhYN/view)
+https://github.com/chadkraus87/EmployeeTracker/assets/127354484/79dd4bc0-2e3c-4bd7-99ae-27e2b4ecba30
 
 ![Terminal Demo](./lib/terminal.png)
 
