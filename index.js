@@ -10,6 +10,7 @@ const {
   updateEmployeeRole,
   deleteDepartment,
   deleteRole,
+  deleteEmployee,
   viewDepartmentBudget,
   updateEmployeeManager
 } = require('./db/queries');
@@ -23,6 +24,7 @@ const {
   promptUpdateEmployeeRole,
   promptDeleteDepartment,
   promptDeleteRole,
+  promptDeleteEmployee,
   promptViewDepartmentBudget,
   promptUpdateEmployeeManager
 } = require('./utils/prompts');
@@ -52,6 +54,7 @@ async function startApp() {
             'Update an employee manager',
             'Delete a department',
             'Delete a role',
+            'Delete an employee',
             'View total utilized budget of a department',
             'Exit'
           ]
@@ -97,6 +100,10 @@ async function startApp() {
 
         case 'Delete a role':
           await deleteRoleData();
+          break;
+
+        case 'Delete an employee':
+          await deleteEmployeeData();
           break;
 
         case 'View total utilized budget of a department':
@@ -193,6 +200,14 @@ async function deleteRoleData() {
   const { roleId } = await promptDeleteRole(roles);
   await deleteRole(roleId);
   console.log('Role deleted successfully!');
+}
+
+// Delete an employee
+async function deleteEmployeeData() {
+  const employees = await viewAllEmployees();
+  const { employeeId } = await promptDeleteEmployee(employees);
+  await deleteEmployee(employeeId);
+  console.log('Employee deleted successfully!');
 }
 
 // View the total utilized budget of a department

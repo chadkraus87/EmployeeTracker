@@ -163,6 +163,22 @@ async function promptDeleteRole() {
   ]);
 }
 
+// Delete an employee
+async function promptDeleteEmployee() {
+  const employees = await queries.viewAllEmployees();
+  return inquirer.prompt([
+    {
+      type: 'list',
+      name: 'employeeId',
+      message: 'Select the employee to delete:',
+      choices: employees.map(employee => ({
+        name: `${employee.firstName} ${employee.lastName}`,
+        value: employee.id
+      }))
+    }
+  ]);
+}
+
 // Total utilized budget of a department
 async function promptViewDepartmentBudget() {
   const departments = await queries.viewAllDepartments();
@@ -187,5 +203,6 @@ module.exports = {
   promptUpdateEmployeeManager,
   promptDeleteDepartment,
   promptDeleteRole,
+  promptDeleteEmployee,
   promptViewDepartmentBudget
 };

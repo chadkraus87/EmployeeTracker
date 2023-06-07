@@ -102,7 +102,7 @@ async function updateEmployeeRole(employeeId, roleId) {
   }
 }
 
-// Function to update an employee's manager
+// Update an employee's manager
 async function updateEmployeeManager(employeeId, managerId) {
   try {
     const [employee] = await connection.execute(
@@ -138,44 +138,14 @@ async function updateEmployeeManager(employeeId, managerId) {
 
 // Delete a department
 async function deleteDepartment(departmentId) {
-  try {
-    // Check if any roles reference the department
-    const rolesInDepartment = await connection.query(
-      'SELECT * FROM role WHERE department_id = ?',
-      [departmentId]
-    );
-
-    if (rolesInDepartment.length > 0) {
-      throw new Error('Cannot delete department. Roles are still assigned to it.');
-    }
-
-    // Delete the department
-    const result = await connection.query('DELETE FROM department WHERE id = ?', [departmentId]);
-    return result;
-  } catch (error) {
-    throw error;
-  }
+  const result = await connection.query('DELETE FROM department WHERE id = ?', [departmentId]);
+  return result;
 }
 
 // Delete a role
 async function deleteRole(roleId) {
-  try {
-    // Check if any employees have the role
-    const employeesWithRole = await connection.query(
-      'SELECT * FROM employee WHERE role_id = ?',
-      [roleId]
-    );
-
-    if (employeesWithRole.length > 0) {
-      throw new Error('Cannot delete role. Employees are still assigned to it.');
-    }
-
-    // Delete the role
-    const result = await connection.query('DELETE FROM role WHERE id = ?', [roleId]);
-    return result;
-  } catch (error) {
-    throw error;
-  }
+  const result = await connection.query('DELETE FROM role WHERE id = ?', [roleId]);
+  return result;
 }
 
 // Delete an employee
