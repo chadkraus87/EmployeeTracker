@@ -9,9 +9,9 @@ The Employee Management System is a command-line application that allows users t
 
 [GitHub Repository](https://github.com/chadkraus87/EmployeeTracker)
 
-https://github.com/chadkraus87/EmployeeTracker/assets/127354484/79dd4bc0-2e3c-4bd7-99ae-27e2b4ecba30
-
 ![Terminal Demo](./lib/terminal.png)
+
+https://github.com/chadkraus87/EmployeeTracker/assets/127354484/79dd4bc0-2e3c-4bd7-99ae-27e2b4ecba30
 
 ## Table of Contents
 
@@ -27,6 +27,8 @@ https://github.com/chadkraus87/EmployeeTracker/assets/127354484/79dd4bc0-2e3c-4b
 The NPM Inquirer.js package is required to run this application. To install the package, please visit [NPM Inquirer.js documentation](https://www.npmjs.com/package/inquirer).
 
 The Node MySQL 2 package is required to run this application. To install the package, please vist [Node MySQL 2 Documentation](https://www.npmjs.com/package/mysql2).
+
+The DotENV package is not requried, but suggested to run this application. To install the package, please visit [DotENV Package Documentation](https://www.npmjs.com/package/dotenv)
 
 ## Usage
 
@@ -55,6 +57,8 @@ This project is licensed under the MIT License.
 [NPM Inquirer Package](https://www.npmjs.com/package/inquirer)
 
 [Node MySQL 2 Package](https://www.npmjs.com/package/mysql2)
+
+[DotENV Package](https://www.npmjs.com/package/dotenv)
 
 [Schema Objects](https://docs.oracle.com/cd/B19306_01/server.102/b14220/schema.htm)
 
